@@ -20,9 +20,9 @@ const mapProduct = (p: any) => ({
   imageUrl: p.images && p.images.length > 0 ? p.images[0].url : ''
 });
 
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(request: NextRequest, context: any) {
   try {
-    const id = params.id;
+    const { id } = await context.params;
     const updates = await request.json();
     await connectToDatabase();
 

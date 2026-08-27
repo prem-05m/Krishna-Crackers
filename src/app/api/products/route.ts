@@ -24,7 +24,8 @@ const mapProduct = (p: any) => ({
 export async function GET() {
   try {
     await connectToDatabase();
-    // Populate categoryId to get category name
+    // Ensure Category schema is registered before populate (prevents intermittent 500s)
+    await Category.init();
     const products = await Product.find().populate('categoryId').sort({ createdAt: -1 });
     return NextResponse.json(products.map(mapProduct));
   } catch (error: any) {

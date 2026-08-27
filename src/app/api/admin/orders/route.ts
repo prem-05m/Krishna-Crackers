@@ -47,7 +47,9 @@ export const mapOrder = (o: any) => {
     totalAmount: o.totalAmount,
     status: o.status,
     orderDate: dateObj.toISOString().split('T')[0],
-    orderTime: dateObj.toTimeString().split(' ')[0]
+    orderTime: dateObj.toTimeString().split(' ')[0],
+    orderId: o.orderId || '',
+    notes: o.notes || ''
   };
 };
 

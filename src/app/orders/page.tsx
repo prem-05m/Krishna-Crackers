@@ -8,6 +8,8 @@ const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string; 
   Confirmed:  { label: 'Confirmed',  color: 'text-blue-700 dark:text-blue-400',    bg: 'bg-blue-100 dark:bg-blue-900/30',    icon: CheckCircle },
   Processing: { label: 'Processing', color: 'text-purple-700 dark:text-purple-400', bg: 'bg-purple-100 dark:bg-purple-900/30', icon: Package },
   Ready:      { label: 'Ready',      color: 'text-indigo-700 dark:text-indigo-400', bg: 'bg-indigo-100 dark:bg-indigo-900/30', icon: Package },
+  Shipped:    { label: 'Shipped',    color: 'text-orange-700 dark:text-orange-400', bg: 'bg-orange-100 dark:bg-orange-900/30', icon: Truck },
+  Delivered:  { label: 'Delivered',  color: 'text-emerald-700 dark:text-emerald-400', bg: 'bg-emerald-100 dark:bg-emerald-900/30', icon: CheckCircle },
   Completed:  { label: 'Completed',  color: 'text-green-700 dark:text-green-400',  bg: 'bg-green-100 dark:bg-green-900/30',  icon: CheckCircle },
   Cancelled:  { label: 'Cancelled',  color: 'text-red-700 dark:text-red-400',      bg: 'bg-red-100 dark:bg-red-900/30',      icon: XCircle },
 };
@@ -102,8 +104,8 @@ export default function OrdersPage() {
                   <div className="border-t border-border px-5 pb-5">
                     {/* Status Timeline */}
                     <div className="flex items-center gap-1 py-4 overflow-x-auto">
-                      {['Pending', 'Confirmed', 'Processing', 'Ready', 'Completed'].map((s, i, arr) => {
-                        const statuses = ['Pending', 'Confirmed', 'Processing', 'Ready', 'Completed'];
+                      {['Pending', 'Confirmed', 'Processing', 'Shipped', 'Delivered', 'Completed'].map((s, i, arr) => {
+                        const statuses = ['Pending', 'Confirmed', 'Processing', 'Shipped', 'Delivered', 'Completed'];
                         const currentIdx = statuses.indexOf(order.status);
                         const stepIdx = statuses.indexOf(s);
                         const done = order.status !== 'Cancelled' && stepIdx <= currentIdx;

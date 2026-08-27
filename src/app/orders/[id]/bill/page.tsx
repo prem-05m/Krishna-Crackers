@@ -7,7 +7,7 @@ import Link from 'next/link';
 const SHOP = {
   name: 'Krishna Crackers',
   tagline: 'Premium Quality Fireworks',
-  address: 'Sivakasi, Tamil Nadu',
+  address: 'Thiyagadurgam, Tamil Nadu',
   phone: '',
   gstin: '',
 };

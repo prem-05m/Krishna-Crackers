@@ -3,6 +3,7 @@ import { getSession } from '@/lib/auth';
 import connectToDatabase from '@/lib/mongoose';
 import Order from '@/models/Order';
 import User from '@/models/User';
+import { sendNewOrderNotification } from '@/lib/fcm';
 
 export async function createOrderAction(orderData: { customer: { name: string; phone: string; town: string }; items: any[]; notes?: string; }) {
   try {
@@ -26,6 +27,10 @@ export async function createOrderAction(orderData: { customer: { name: string; p
       notes: orderData.notes,
       status: 'Pending',
     });
+
+    // Send push notification to admin
+    sendNewOrderNotification(orderData.customer.name, orderData.customer.town, orderId).catch(() => {});
+
     return { success: true, orderId: order.orderId };
   } catch (error: any) {
     console.error('Create order error:', error);

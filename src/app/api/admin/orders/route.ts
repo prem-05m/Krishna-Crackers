@@ -29,10 +29,10 @@ export const mapOrder = (o: any) => {
     items: o.items.map((i: any) => ({
       // Handle case where productId is populated vs just an ObjectId
       product: mapProduct(i.productId) || {
-        _id: i.productId?.toString(),
-        name: i.name,
-        price: i.price,
-        unit: i.unit,
+        _id: (i.productId || i._id || 'deleted-product').toString(),
+        name: i.name || 'Unknown Product',
+        price: i.price || 0,
+        unit: i.unit || '',
         description: '',
         category: null,
         unitCount: 1,

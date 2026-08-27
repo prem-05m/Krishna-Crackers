@@ -1,16 +1,17 @@
-import * as admin from 'firebase-admin';
+import { initializeApp, getApps, cert } from 'firebase-admin/app';
+import { getMessaging, Message } from 'firebase-admin/messaging';
 
 // Initialize Firebase Admin SDK using environment variables
 // This prevents multiple initializations during Next.js hot-reloading
-if (!admin.apps.length) {
+if (!getApps().length) {
   try {
     const privateKey = process.env.FIREBASE_PRIVATE_KEY
       ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
       : undefined;
 
     if (process.env.FIREBASE_PROJECT_ID && process.env.FIREBASE_CLIENT_EMAIL && privateKey) {
-      admin.initializeApp({
-        credential: admin.credential.cert({
+      initializeApp({
+        credential: cert({
           projectId: process.env.FIREBASE_PROJECT_ID,
           clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
           privateKey: privateKey,
@@ -29,14 +30,14 @@ if (!admin.apps.length) {
  * Sends a push notification via Firebase Cloud Messaging API (V1).
  */
 export async function sendNewOrderNotification(customerName: string, town: string, orderId: string) {
-  if (!admin.apps.length) {
+  if (!getApps().length) {
     console.log('Firebase Admin is not initialized, skipping push notification');
     return;
   }
 
   const topic = 'new_orders';
 
-  const message = {
+  const message: Message = {
     topic: topic,
     notification: {
       title: '🎆 New Order Received!',
@@ -49,17 +50,17 @@ export async function sendNewOrderNotification(customerName: string, town: strin
       type: 'new_order',
     },
     android: {
-      priority: 'high' as const,
+      priority: 'high',
       notification: {
         channelId: 'krishna_orders',
         sound: 'default',
-        priority: 'high' as const,
+        priority: 'high',
       },
     },
   };
 
   try {
-    const response = await admin.messaging().send(message);
+    const response = await getMessaging().send(message);
     console.log('FCM notification sent successfully:', response);
   } catch (error) {
     console.error('FCM notification error:', error);

@@ -1,22 +1,46 @@
+import * as admin from 'firebase-admin';
+
+// Initialize Firebase Admin SDK using environment variables
+// This prevents multiple initializations during Next.js hot-reloading
+if (!admin.apps.length) {
+  try {
+    const privateKey = process.env.FIREBASE_PRIVATE_KEY
+      ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n')
+      : undefined;
+
+    if (process.env.FIREBASE_PROJECT_ID && process.env.FIREBASE_CLIENT_EMAIL && privateKey) {
+      admin.initializeApp({
+        credential: admin.credential.cert({
+          projectId: process.env.FIREBASE_PROJECT_ID,
+          clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+          privateKey: privateKey,
+        }),
+      });
+      console.log('Firebase Admin initialized successfully.');
+    } else {
+      console.log('Firebase Admin not initialized: Missing environment variables.');
+    }
+  } catch (error) {
+    console.error('Firebase Admin initialization error:', error);
+  }
+}
+
 /**
- * Sends a push notification via Firebase Cloud Messaging (Legacy HTTP API).
- * Uses the FCM Server Key stored in environment variables.
+ * Sends a push notification via Firebase Cloud Messaging API (V1).
  */
 export async function sendNewOrderNotification(customerName: string, town: string, orderId: string) {
-  const serverKey = process.env.FCM_SERVER_KEY;
-  if (!serverKey) {
-    console.log('FCM_SERVER_KEY not set, skipping push notification');
+  if (!admin.apps.length) {
+    console.log('Firebase Admin is not initialized, skipping push notification');
     return;
   }
 
-  const topic = 'new_orders'; // All admin devices subscribe to this topic
+  const topic = 'new_orders';
 
-  const payload = {
-    to: `/topics/${topic}`,
+  const message = {
+    topic: topic,
     notification: {
       title: '🎆 New Order Received!',
       body: `${customerName} from ${town} placed an order (${orderId})`,
-      sound: 'default',
     },
     data: {
       orderId,
@@ -25,26 +49,18 @@ export async function sendNewOrderNotification(customerName: string, town: strin
       type: 'new_order',
     },
     android: {
-      priority: 'high',
+      priority: 'high' as const,
       notification: {
-        channel_id: 'krishna_orders',
+        channelId: 'krishna_orders',
         sound: 'default',
-        priority: 'high',
+        priority: 'high' as const,
       },
     },
   };
 
   try {
-    const response = await fetch('https://fcm.googleapis.com/fcm/send', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `key=${serverKey}`,
-      },
-      body: JSON.stringify(payload),
-    });
-    const result = await response.json();
-    console.log('FCM notification sent:', result);
+    const response = await admin.messaging().send(message);
+    console.log('FCM notification sent successfully:', response);
   } catch (error) {
     console.error('FCM notification error:', error);
   }

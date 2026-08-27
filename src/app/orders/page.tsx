@@ -18,15 +18,24 @@ export default function OrdersPage() {
   const [error, setError] = useState('');
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  useEffect(() => {
+  const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
+
+  const loadOrders = () => {
     fetch('/api/orders')
       .then(r => r.json())
       .then(data => {
-        if (Array.isArray(data)) setOrders(data);
+        if (Array.isArray(data)) { setOrders(data); setLastUpdated(new Date()); }
         else setError(data.error || 'Failed to load orders');
       })
       .catch(() => setError('Failed to load orders'))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    loadOrders();
+    // Poll every 30 seconds for live status updates
+    const interval = setInterval(loadOrders, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   if (loading) return (

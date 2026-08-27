@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'next/navigation';
-import { Download, Share2, Printer, ArrowLeft } from 'lucide-react';
+import { Download, Share2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 const SHOP = {
@@ -29,7 +29,6 @@ export default function BillPage() {
       .finally(() => setLoading(false));
   }, [params.id]);
 
-  const handlePrint = () => window.print();
 
   const handleDownload = async () => {
     if (!billRef.current) return;
@@ -84,13 +83,6 @@ export default function BillPage() {
         </Link>
         <div className="flex items-center gap-3">
           <button
-            onClick={handlePrint}
-            className="flex items-center gap-2 px-4 py-2 border border-border rounded-xl hover:bg-accent transition-colors text-sm font-medium"
-          >
-            <Printer className="w-4 h-4" />
-            Print
-          </button>
-          <button
             onClick={handleShare}
             className="flex items-center gap-2 px-4 py-2 border border-primary text-primary rounded-xl hover:bg-primary hover:text-primary-foreground transition-colors text-sm font-medium"
           >
@@ -102,7 +94,7 @@ export default function BillPage() {
             className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-colors text-sm font-medium"
           >
             <Download className="w-4 h-4" />
-            Save as Image
+            Download
           </button>
         </div>
       </div>

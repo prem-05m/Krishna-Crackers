@@ -30,27 +30,53 @@
 }
 
 @layer base {
+  /* Light theme (system default) */
   :root {
-    --background: 260 50% 5%;
-    --foreground: 210 40% 98%;
-    --card: 260 40% 8%;
-    --card-foreground: 210 40% 98%;
-    --popover: 260 40% 8%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 11 80% 55%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 260 30% 15%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 260 30% 15%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 260 30% 15%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 260 30% 18%;
-    --input: 260 30% 18%;
-    --ring: 11 80% 55%;
+    --background: 0 0% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 11 80% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 40% 94%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 94%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 210 40% 94%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 214 32% 89%;
+    --input: 214 32% 89%;
+    --ring: 11 80% 50%;
     --radius: 0.5rem;
+  }
+
+  /* Dark theme (system dark mode) */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: 222 47% 6%;
+      --foreground: 210 40% 98%;
+      --card: 222 47% 9%;
+      --card-foreground: 210 40% 98%;
+      --popover: 222 47% 9%;
+      --popover-foreground: 210 40% 98%;
+      --primary: 11 80% 55%;
+      --primary-foreground: 210 40% 98%;
+      --secondary: 217 33% 17%;
+      --secondary-foreground: 210 40% 98%;
+      --muted: 217 33% 17%;
+      --muted-foreground: 215 20% 65%;
+      --accent: 217 33% 17%;
+      --accent-foreground: 210 40% 98%;
+      --destructive: 0 63% 31%;
+      --destructive-foreground: 210 40% 98%;
+      --border: 217 33% 20%;
+      --input: 217 33% 20%;
+      --ring: 11 80% 55%;
+    }
   }
 }
 
@@ -60,5 +86,6 @@
   }
   body {
     @apply bg-background text-foreground;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 }

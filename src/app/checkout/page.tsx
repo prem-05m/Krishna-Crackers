@@ -65,7 +65,7 @@ export default function CheckoutPage() {
       });
       if (result.success) {
         clearCart();
-        router.push(`/orders`);
+        router.push(`/orders/${result.id}/bill`);
       } else {
         setError(result.error ?? 'Failed to place order. Please try again.');
       }

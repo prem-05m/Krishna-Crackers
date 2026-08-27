@@ -50,53 +50,65 @@ export default function CartPage() {
           {items.map((item) => (
             <div
               key={item.productId}
-              className="flex items-center gap-4 bg-card p-4 rounded-2xl border border-border hover:border-primary/30 transition-colors"
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-card p-4 rounded-2xl border border-border hover:border-primary/30 transition-colors"
             >
-              {/* Product Image */}
-              <div className="w-20 h-20 shrink-0 rounded-xl overflow-hidden bg-muted">
-                {item.image ? (
-                  <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-2xl">🎆</div>
-                )}
-              </div>
+              <div className="flex items-start gap-4 w-full sm:w-auto sm:flex-grow min-w-0">
+                {/* Product Image */}
+                <div className="w-20 h-20 shrink-0 rounded-xl overflow-hidden bg-muted">
+                  {item.image ? (
+                    <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-2xl">🎆</div>
+                  )}
+                </div>
 
-              {/* Details */}
-              <div className="flex-grow min-w-0">
-                <h3 className="font-bold text-foreground truncate">{item.name}</h3>
-                <p className="text-sm text-muted-foreground">{item.unit}</p>
-                <p className="text-primary font-semibold">₹{item.price} each</p>
-              </div>
+                {/* Details */}
+                <div className="flex-grow min-w-0">
+                  <h3 className="font-bold text-foreground truncate">{item.name}</h3>
+                  <p className="text-sm text-muted-foreground">{item.unit}</p>
+                  <p className="text-primary font-semibold">₹{item.price} each</p>
+                </div>
 
-              {/* Quantity Stepper */}
-              <div className="flex items-center gap-2 shrink-0">
+                {/* Remove button for mobile (Top Right) */}
                 <button
-                  onClick={() => item.quantity === 1 ? removeItem(item.productId) : updateQuantity(item.productId, item.quantity - 1)}
-                  className="w-9 h-9 rounded-xl border border-border bg-muted hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 flex items-center justify-center transition-colors"
+                  onClick={() => removeItem(item.productId)}
+                  className="sm:hidden text-muted-foreground hover:text-destructive transition-colors p-1"
                 >
-                  <Minus className="w-3.5 h-3.5" />
-                </button>
-                <span className="w-8 text-center font-bold">{item.quantity}</span>
-                <button
-                  onClick={() => updateQuantity(item.productId, item.quantity + 1)}
-                  className="w-9 h-9 rounded-xl bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-colors"
-                >
-                  <Plus className="w-3.5 h-3.5" />
+                  <Trash2 className="w-4 h-4" />
                 </button>
               </div>
 
-              {/* Subtotal */}
-              <div className="text-right shrink-0 min-w-[4rem]">
-                <p className="font-bold text-foreground">₹{(item.price * item.quantity).toFixed(0)}</p>
-              </div>
+              <div className="flex items-center justify-between w-full sm:w-auto sm:shrink-0 gap-4 mt-2 sm:mt-0">
+                {/* Quantity Stepper */}
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    onClick={() => item.quantity === 1 ? removeItem(item.productId) : updateQuantity(item.productId, item.quantity - 1)}
+                    className="w-9 h-9 rounded-xl border border-border bg-muted hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30 flex items-center justify-center transition-colors"
+                  >
+                    <Minus className="w-3.5 h-3.5" />
+                  </button>
+                  <span className="w-8 text-center font-bold">{item.quantity}</span>
+                  <button
+                    onClick={() => updateQuantity(item.productId, item.quantity + 1)}
+                    className="w-9 h-9 rounded-xl bg-primary text-primary-foreground flex items-center justify-center hover:bg-primary/90 transition-colors"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                  </button>
+                </div>
 
-              {/* Remove */}
-              <button
-                onClick={() => removeItem(item.productId)}
-                className="text-muted-foreground hover:text-destructive transition-colors p-1"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
+                {/* Subtotal */}
+                <div className="text-right shrink-0 min-w-[4rem]">
+                  <p className="font-bold text-foreground">₹{(item.price * item.quantity).toFixed(0)}</p>
+                </div>
+
+                {/* Remove for desktop */}
+                <button
+                  onClick={() => removeItem(item.productId)}
+                  className="hidden sm:block text-muted-foreground hover:text-destructive transition-colors p-1"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           ))}
         </div>

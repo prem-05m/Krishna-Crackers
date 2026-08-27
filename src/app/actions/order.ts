@@ -31,7 +31,7 @@ export async function createOrderAction(orderData: { customer: { name: string; p
     // Send push notification to admin
     sendNewOrderNotification(orderData.customer.name, orderData.customer.town, orderId).catch(() => {});
 
-    return { success: true, orderId: order.orderId };
+    return { success: true, orderId: order.orderId, id: order._id.toString() };
   } catch (error: any) {
     console.error('Create order error:', error);
     return { success: false, error: 'Failed to create order' };
